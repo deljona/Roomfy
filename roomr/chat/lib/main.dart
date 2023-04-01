@@ -4,10 +4,10 @@ import 'package:logger/logger.dart';
 
 // Logs
 var logger = Logger(printer: PrettyPrinter());
+IO.Socket socket = IO.io("http://10.0.2.2:5000",
+    IO.OptionBuilder().setTransports(['websocket']).build());
 
 main() {
-  IO.Socket socket = IO.io("http://10.0.2.2:5000",
-      IO.OptionBuilder().setTransports(['websocket']).build());
   socket.onConnect((_) {
     logger.i("Conectado al Socket!");
     socket.emit('connection', 'Usuario conectado.');
