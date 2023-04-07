@@ -19,7 +19,9 @@ class _SignUpState extends State<SignUp> {
 
   final nombreController = TextEditingController();
   final usuarioController = TextEditingController();
-  final tagController = TextEditingController();
+
+  final TextEditingController _nameController = TextEditingController();
+  TextEditingController _userController = TextEditingController();
 
   String? _validarCampo(String? valor) {
     if (valor == null || valor.isEmpty) {
@@ -52,60 +54,67 @@ class _SignUpState extends State<SignUp> {
         appBar: AppBar(
           title: const Text("Registro"),
         ),
-        body: Center(
-            child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(children: [
-            Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  TextFormField(
-                    validator: _validarCampo,
-                    controller: nombreController,
-                    decoration: const InputDecoration(
-                        prefixIcon: Icon(Icons.person),
-                        border: OutlineInputBorder(),
-                        labelText: 'Nombre'),
-                  ),
-                  const SizedBox(height: 20),
-                  TextFormField(
-                    validator: _validarCampo,
-                    controller: usuarioController,
-                    decoration: const InputDecoration(
-                        prefixIcon: Icon(Icons.alternate_email),
-                        border: OutlineInputBorder(),
-                        labelText: 'Usuario'),
-                  ),
-                  const SizedBox(height: 20),
-                  TextFormField(
-                    validator: _validarCampo,
-                    controller: tagController,
-                    decoration: const InputDecoration(
-                        prefixIcon: Icon(Icons.tag),
-                        border: OutlineInputBorder(),
-                        labelText: 'Tag'),
-                  ),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        _socket.emit(
-                            'registro',
-                            User(
-                                    name: nombreController.text,
-                                    username: usuarioController.text,
-                                    tag: tagController.text)
-                                .toJson());
-                      }
-                    },
-                    child: const Text('Registrarme'),
-                  ),
-                ],
-              ),
-            )
-          ]),
-        )));
+        body: SingleChildScrollView(
+          child: Center(
+              child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(children: [
+              const Text('Los usuarios te conocerán como: '),
+              Text("${_nameController.text}@${_userController.text}"),
+              const SizedBox(height: 20),
+              Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    TextFormField(
+                      validator: _validarCampo,
+                      controller: nombreController,
+                      decoration: const InputDecoration(
+                          prefixIcon: Icon(Icons.person),
+                          border: OutlineInputBorder(),
+                          labelText: 'Nombre'),
+                      onChanged: (text) {
+                        setState(() {
+                          _formKey.currentState!.validate();
+                          _nameController.text = text;
+                        });
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      validator: _validarCampo,
+                      controller: usuarioController,
+                      decoration: const InputDecoration(
+                          prefixIcon: Icon(Icons.alternate_email),
+                          border: OutlineInputBorder(),
+                          labelText: 'Usuario'),
+                      onChanged: (text) {
+                        setState(() {
+                          _formKey.currentState!.validate();
+                          _userController.text = text;
+                        });
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          _socket.emit(
+                              'registro',
+                              User(
+                                      name: nombreController.text,
+                                      username: usuarioController.text)
+                                  .toJson());
+                        }
+                      },
+                      child: const Text('Registrarme'),
+                    ),
+                  ],
+                ),
+              )
+            ]),
+          )),
+        ));
   }
 }
