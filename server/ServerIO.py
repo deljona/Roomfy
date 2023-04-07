@@ -12,6 +12,10 @@ socketio = SocketIO(app)
 
 @socketio.on('registro')
 def handle_new_user(usuario):
+    # Comprobar que el usuario no existe
+        # Si no existe registrarlo en MongoDB
+    # Si existe
+        # Emitir un mensaje de usuario existente
     print(usuario)
 
 if __name__ == '__main__':
