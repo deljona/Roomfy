@@ -16,10 +16,15 @@ socketio = SocketIO(app)
 
 @socketio.on('registro')
 def handle_new_user(new_user):
+    nombre = str(new_user['name'])
+    usuario = str(new_user['username'])
     cursor = collection_usuarios.find()
     for user in cursor:
-        if(user['name'] == new_user['name'] and user['username'] == new_user['username']):
+        nombre_registrado = str(user['name'])
+        usuario_registrado = str(user['username'])
+        if(nombre.__eq__(nombre_registrado) and usuario.__eq__(usuario_registrado)):
             print("No registrar usuario")
+            break
     else:
         collection_usuarios.insert_one(new_user)
     
