@@ -5,7 +5,7 @@ from cryptography.fernet import Fernet
 import base64
 
 dbname = get_database()
-collection_name = dbname["usuarios"]
+collection_usuarios = dbname["usuarios"]
 
 key = Fernet.generate_key()
 __SECRET_KEY = base64.urlsafe_b64encode(key).decode()
@@ -16,12 +16,12 @@ socketio = SocketIO(app)
 
 @socketio.on('registro')
 def handle_new_user(new_user):
-    cursor = collection_name.find()
+    cursor = collection_usuarios.find()
     for user in cursor:
         if(user['name'] == new_user['name'] and user['username'] == new_user['username']):
             print("No registrar usuario")
         else:
-            collection_name.insert_one(new_user)
+            collection_usuarios.insert_one(new_user)
 
 if __name__ == '__main__':
     socketio.run(app, debug=True)
