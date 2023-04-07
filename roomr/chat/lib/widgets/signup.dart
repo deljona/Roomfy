@@ -21,7 +21,7 @@ class _SignUpState extends State<SignUp> {
   final usuarioController = TextEditingController();
 
   final TextEditingController _nameController = TextEditingController();
-  TextEditingController _userController = TextEditingController();
+  final TextEditingController _userController = TextEditingController();
 
   String? _validarCampo(String? valor) {
     if (valor == null || valor.isEmpty) {
@@ -68,6 +68,7 @@ class _SignUpState extends State<SignUp> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     TextFormField(
+                      maxLength: 10,
                       validator: _validarCampo,
                       controller: nombreController,
                       decoration: const InputDecoration(
@@ -83,6 +84,7 @@ class _SignUpState extends State<SignUp> {
                     ),
                     const SizedBox(height: 20),
                     TextFormField(
+                      maxLength: 10,
                       validator: _validarCampo,
                       controller: usuarioController,
                       decoration: const InputDecoration(
