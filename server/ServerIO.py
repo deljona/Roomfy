@@ -20,8 +20,8 @@ def handle_new_user(new_user):
     for user in cursor:
         if(user['name'] == new_user['name'] and user['username'] == new_user['username']):
             print("No registrar usuario")
-        else:
-            collection_usuarios.insert_one(new_user)
-
+    else:
+        collection_usuarios.insert_one(new_user)
+    
 if __name__ == '__main__':
     socketio.run(app, debug=True)
