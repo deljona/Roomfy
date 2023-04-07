@@ -10,13 +10,9 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = __SECRET_KEY
 socketio = SocketIO(app)
 
-@socketio.on('mensaje')
-def handle_message(mensaje):
-    print('Mensaje recibido: ' + mensaje)
-    
-@socketio.on('connection')
-def handle_message(connection):
-    print(connection)
+# @socketio.on('mensaje')
+# def handle_message(mensaje):
+#     print(mensaje)
 
 if __name__ == '__main__':
     socketio.run(app, debug=True)

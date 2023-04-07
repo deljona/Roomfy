@@ -1,36 +1,27 @@
+import 'package:chat/widgets/login.dart';
 import 'package:flutter/material.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:logger/logger.dart';
 
-// Logs
 var logger = Logger(printer: PrettyPrinter());
-IO.Socket socket = IO.io("http://10.0.2.2:5000",
-    IO.OptionBuilder().setTransports(['websocket']).build());
 
 main() {
-  socket.onConnect((_) {
-    logger.i("Conectado al Socket!");
-    socket.emit('connection', 'Usuario conectado.');
-  });
   logger.i("Building App...");
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text("Chat"),
-        ),
-        body: const Center(
-          child: Text("Esto es una prueba."),
-        ),
-      ),
-    );
+        theme: ThemeData(useMaterial3: true),
+        debugShowCheckedModeBanner: false,
+        home: const Login());
   }
 }
