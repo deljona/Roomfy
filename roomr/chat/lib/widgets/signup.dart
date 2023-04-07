@@ -5,14 +5,14 @@ import 'package:logger/logger.dart';
 
 var logger = Logger(printer: PrettyPrinter());
 
-class Login extends StatefulWidget {
-  const Login({super.key});
+class SignUp extends StatefulWidget {
+  const SignUp({super.key});
 
   @override
-  State<Login> createState() => _LoginState();
+  State<SignUp> createState() => _SignUpState();
 }
 
-class _LoginState extends State<Login> {
+class _SignUpState extends State<SignUp> {
   late IO.Socket _socket;
 
   final _formKey = GlobalKey<FormState>();

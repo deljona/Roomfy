@@ -1,4 +1,4 @@
-import 'package:chat/widgets/login.dart';
+import 'package:chat/widgets/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
@@ -22,6 +22,6 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
         theme: ThemeData(useMaterial3: true),
         debugShowCheckedModeBanner: false,
-        home: const Login());
+        home: const SignUp());
   }
 }
