@@ -34,9 +34,39 @@ class _LoginState extends State<Login> {
         appBar: AppBar(
           title: const Text("Registro"),
         ),
-        body: const Center(
-            child: Text(
-          'Diseño',
+        body: Center(
+            child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(children: [
+            Form(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  TextFormField(
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(), labelText: 'Nombre'),
+                  ),
+                  const SizedBox(height: 20),
+                  TextFormField(
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(), labelText: 'Usuario'),
+                  ),
+                  const SizedBox(height: 20),
+                  TextFormField(
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(), labelText: 'Tag'),
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () {
+                      // Lógica
+                    },
+                    child: const Text('Registrarme'),
+                  ),
+                ],
+              ),
+            )
+          ]),
         )));
   }
 }
