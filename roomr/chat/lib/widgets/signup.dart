@@ -65,21 +65,27 @@ class _SignUpState extends State<SignUp> {
                     validator: _validarCampo,
                     controller: nombreController,
                     decoration: const InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'Nombre'),
+                        prefixIcon: Icon(Icons.person),
+                        border: OutlineInputBorder(),
+                        labelText: 'Nombre'),
                   ),
                   const SizedBox(height: 20),
                   TextFormField(
                     validator: _validarCampo,
                     controller: usuarioController,
                     decoration: const InputDecoration(
-                        border: OutlineInputBorder(), labelText: '@ Usuario'),
+                        prefixIcon: Icon(Icons.alternate_email),
+                        border: OutlineInputBorder(),
+                        labelText: 'Usuario'),
                   ),
                   const SizedBox(height: 20),
                   TextFormField(
                     validator: _validarCampo,
                     controller: tagController,
                     decoration: const InputDecoration(
-                        border: OutlineInputBorder(), labelText: '# Tag'),
+                        prefixIcon: Icon(Icons.tag),
+                        border: OutlineInputBorder(),
+                        labelText: 'Tag'),
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton(
