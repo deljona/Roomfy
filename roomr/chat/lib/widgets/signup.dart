@@ -1,6 +1,6 @@
+import 'package:chat/main.dart';
 import 'package:chat/models/user.dart';
 import 'package:flutter/material.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:logger/logger.dart';
 
 var logger = Logger(printer: PrettyPrinter());
@@ -13,8 +13,6 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  late IO.Socket _socket;
-
   final _formKey = GlobalKey<FormState>();
 
   final nombreController = TextEditingController();
@@ -32,20 +30,6 @@ class _SignUpState extends State<SignUp> {
       return 'Ingrese sólo números, letras y máximo 10 carácteres.';
     }
     return null;
-  }
-
-  _connectSocket() {
-    _socket.onConnect((data) => logger.i('Conexión establecida.'));
-    _socket.onConnectError((data) => logger.e('Error de conexión: $data'));
-    _socket.onDisconnect((data) => logger.w('Socket.IO desconectado.'));
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _socket = IO.io("http://10.0.2.2:5000",
-        IO.OptionBuilder().setTransports(['websocket']).build());
-    _connectSocket();
   }
 
   @override
@@ -101,13 +85,11 @@ class _SignUpState extends State<SignUp> {
                     const SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: () {
+                        User nuevoUsuario = User(
+                            name: nombreController.text,
+                            username: usuarioController.text);
                         if (_formKey.currentState!.validate()) {
-                          _socket.emit(
-                              'registro',
-                              User(
-                                      name: nombreController.text,
-                                      username: usuarioController.text)
-                                  .toJson());
+                          socket.emit('registro', nuevoUsuario.toJson());
                         }
                       },
                       child: const Text('Registrarme'),

@@ -1,8 +1,10 @@
 import 'package:chat/widgets/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 var logger = Logger(printer: PrettyPrinter());
+late IO.Socket socket;
 
 main() {
   logger.i("Building App...");
@@ -17,6 +19,20 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  _connectSocket() {
+    socket.onConnect((data) => logger.i('Conexión establecida.'));
+    socket.onConnectError((data) => logger.e('Error de conexión: $data'));
+    socket.onDisconnect((data) => logger.w('Socket.IO desconectado.'));
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    socket = IO.io("http://10.0.2.2:5000",
+        IO.OptionBuilder().setTransports(['websocket']).build());
+    _connectSocket();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
