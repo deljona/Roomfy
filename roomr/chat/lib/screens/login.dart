@@ -1,5 +1,6 @@
 import 'package:chat/main.dart';
 import 'package:chat/models/user.dart';
+import 'package:chat/screens/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
@@ -52,7 +53,10 @@ class _LoginState extends State<Login> {
               const SizedBox(height: 20),
               const Text(
                 "Inicia sesión",
-                style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    fontSize: 26,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xff252525)),
               ),
               const SizedBox(height: 20),
               Form(
@@ -105,6 +109,16 @@ class _LoginState extends State<Login> {
                     ),
                   ],
                 ),
+              ),
+              const SizedBox(height: 200),
+              TextButton(
+                onPressed: () {
+                  nombreController.clear();
+                  usuarioController.clear();
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const SignUp()));
+                },
+                child: const Text('Crear nueva cuenta'),
               )
             ]),
           )),

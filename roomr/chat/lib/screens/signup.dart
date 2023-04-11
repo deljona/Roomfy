@@ -36,16 +36,30 @@ class _SignUpState extends State<SignUp> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Registro"),
+          title: const Text(
+            "Registro",
+            style: TextStyle(
+                fontSize: 26,
+                fontWeight: FontWeight.bold,
+                color: Color(0xff252525)),
+          ),
         ),
         body: SingleChildScrollView(
           child: Center(
               child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.fromLTRB(40, 8, 40, 8),
             child: Column(children: [
-              const Text('Los usuarios te conocerán como: '),
-              Text("${_nameController.text}@${_userController.text}"),
+              const Text(
+                'Los usuarios te conocerán como: ',
+                style: TextStyle(fontSize: 16),
+              ),
               const SizedBox(height: 20),
+              Text(
+                "${_nameController.text}@${_userController.text}",
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              ),
+              const SizedBox(height: 40),
               Form(
                 key: _formKeySignUp,
                 child: Column(
