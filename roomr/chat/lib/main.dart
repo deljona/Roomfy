@@ -1,4 +1,4 @@
-import 'package:chat/widgets/signup.dart';
+import 'package:chat/screens/login.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
@@ -38,6 +38,6 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
         theme: ThemeData(useMaterial3: true),
         debugShowCheckedModeBanner: false,
-        home: const SignUp());
+        home: const Login());
   }
 }

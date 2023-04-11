@@ -13,7 +13,7 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  final _formKey = GlobalKey<FormState>();
+  final _formKeySignUp = GlobalKey<FormState>();
 
   final nombreController = TextEditingController();
   final usuarioController = TextEditingController();
@@ -47,7 +47,7 @@ class _SignUpState extends State<SignUp> {
               Text("${_nameController.text}@${_userController.text}"),
               const SizedBox(height: 20),
               Form(
-                key: _formKey,
+                key: _formKeySignUp,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -61,7 +61,7 @@ class _SignUpState extends State<SignUp> {
                           labelText: 'Nombre'),
                       onChanged: (text) {
                         setState(() {
-                          _formKey.currentState!.validate();
+                          _formKeySignUp.currentState!.validate();
                           _nameController.text = text;
                         });
                       },
@@ -77,7 +77,7 @@ class _SignUpState extends State<SignUp> {
                           labelText: 'Usuario'),
                       onChanged: (text) {
                         setState(() {
-                          _formKey.currentState!.validate();
+                          _formKeySignUp.currentState!.validate();
                           _userController.text = text;
                         });
                       },
@@ -88,7 +88,7 @@ class _SignUpState extends State<SignUp> {
                         User nuevoUsuario = User(
                             name: nombreController.text,
                             username: usuarioController.text);
-                        if (_formKey.currentState!.validate()) {
+                        if (_formKeySignUp.currentState!.validate()) {
                           socket.emit('registro', nuevoUsuario.toJson());
                         }
                       },
