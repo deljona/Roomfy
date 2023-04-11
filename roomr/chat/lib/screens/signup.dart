@@ -25,9 +25,9 @@ class _SignUpState extends State<SignUp> {
     if (valor == null || valor.isEmpty) {
       return 'Este campo es requerido';
     }
-    final RegExp regExp = RegExp(r'^[a-zA-Z0-9]{1,10}$');
+    final RegExp regExp = RegExp(r'^[a-z0-9]{1,10}$');
     if (!regExp.hasMatch(valor)) {
-      return 'Ingrese sólo números, letras y máximo 10 carácteres.';
+      return 'Ingrese sólo números, letras y minúsculas.';
     }
     return null;
   }

@@ -26,9 +26,9 @@ class _LoginState extends State<Login> {
     if (valor == null || valor.isEmpty) {
       return 'Este campo es obligatorio.';
     }
-    final RegExp regExp = RegExp(r'^[a-zA-Z0-9]{1,10}$');
+    final RegExp regExp = RegExp(r'^[a-z0-9]{1,10}$');
     if (!regExp.hasMatch(valor)) {
-      return 'Ingrese sólo números y letras.';
+      return 'Ingrese sólo números, letras y minúsculas.';
     }
     return null;
   }
