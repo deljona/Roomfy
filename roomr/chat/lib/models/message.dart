@@ -1,8 +1,8 @@
 class Message {
   final String message;
-  final String sendAt = getTime();
+  String? sendAt = getTime();
 
-  Message({required this.message});
+  Message({required this.message, this.sendAt});
 
   Map<String, dynamic> toJson() => {'message': message, 'sendAt': sendAt};
 

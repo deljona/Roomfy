@@ -9,7 +9,7 @@ def get_database():
     client = MongoClient(CONNECTION_STRING)
     
     # Create a DataBase
-    return client['usuarios_registrados']
+    return client['Roomfy']
 
 if __name__=="__main__":
     

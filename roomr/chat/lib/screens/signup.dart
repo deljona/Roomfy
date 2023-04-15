@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:chat/main.dart';
 import 'package:chat/models/user.dart';
 import 'package:flutter/material.dart';
@@ -99,11 +101,13 @@ class _SignUpState extends State<SignUp> {
                     const SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: () {
+                        // Instancia un nuevo usuario
                         User nuevoUsuario = User(
                             name: nombreController.text,
                             username: usuarioController.text);
+                        String jsonString = jsonEncode(nuevoUsuario);
                         if (_formKeySignUp.currentState!.validate()) {
-                          socket.emit('registro', nuevoUsuario.toJson());
+                          socket.emit('registro', jsonString);
                         }
                       },
                       child: const Text('Registrarme'),
