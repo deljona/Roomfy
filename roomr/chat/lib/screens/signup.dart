@@ -109,9 +109,8 @@ class _SignUpState extends State<SignUp> {
                             name: nombreController.text,
                             username: usuarioController.text);
                         String jsonString = jsonEncode(nuevoUsuario);
-
                         if (_formKeySignUp.currentState!.validate()) {
-                          socket.emit('registro', jsonString);
+                          await emitirRegistro(jsonString);
                           await estaRegistrado();
                         }
                       },
@@ -123,6 +122,10 @@ class _SignUpState extends State<SignUp> {
             ]),
           )),
         ));
+  }
+
+  Future emitirRegistro(String data) async {
+    socket.emit('registro', data);
   }
 
   Future<dynamic> estaRegistrado() async {
