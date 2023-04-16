@@ -36,9 +36,11 @@ def handle_new_user(new_user):
         usuario_registrado = user['username']
         if (nombre.__eq__(nombre_registrado) and usuario.__eq__(usuario_registrado)):
             print(f"Ya existe el usuario: {nuevo_usuario}")
+            socketio.emit('registrado', 0)
             break
     else:
         collection_usuarios.insert_one(nuevo_usuario)
+        socketio.emit('registrado', 1)
         print(f"Nuevo usuario registrado: {nuevo_usuario}")
 
 

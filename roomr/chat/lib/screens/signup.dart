@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:chat/main.dart';
 import 'package:chat/models/user.dart';
@@ -22,6 +23,8 @@ class _SignUpState extends State<SignUp> {
 
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _userController = TextEditingController();
+
+  int reg = -1;
 
   String? _validarCampo(String? valor) {
     if (valor == null || valor.isEmpty) {
@@ -100,14 +103,16 @@ class _SignUpState extends State<SignUp> {
                     ),
                     const SizedBox(height: 20),
                     ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         // Instancia un nuevo usuario
                         User nuevoUsuario = User(
                             name: nombreController.text,
                             username: usuarioController.text);
                         String jsonString = jsonEncode(nuevoUsuario);
+
                         if (_formKeySignUp.currentState!.validate()) {
                           socket.emit('registro', jsonString);
+                          await estaRegistrado();
                         }
                       },
                       child: const Text('Registrarme'),
@@ -118,5 +123,50 @@ class _SignUpState extends State<SignUp> {
             ]),
           )),
         ));
+  }
+
+  Future<dynamic> estaRegistrado() async {
+    socket.on('registrado', (data) {
+      reg = data;
+    });
+    if (reg == 0) {
+      logger.w(reg);
+      return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text("Usuario registrado"),
+            content: const Text("Este usuario ya está registrado."),
+            actions: [
+              TextButton(
+                child: const Text("Probar de nuevo"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    } else if (reg == 1) {
+      logger.w(reg);
+      return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text("Usuario creado"),
+            content: const Text("Te has registrado con éxito!"),
+            actions: [
+              TextButton(
+                child: const Text("Iniciar sesión"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 }
