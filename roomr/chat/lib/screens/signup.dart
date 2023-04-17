@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:chat/main.dart';
 import 'package:chat/models/user.dart';
@@ -110,8 +109,7 @@ class _SignUpState extends State<SignUp> {
                             username: usuarioController.text);
                         String jsonString = jsonEncode(nuevoUsuario);
                         if (_formKeySignUp.currentState!.validate()) {
-                          await emitirRegistro(jsonString);
-                          await estaRegistrado();
+                          await estaRegistrado(jsonString);
                         }
                       },
                       child: const Text('Registrarme'),
@@ -124,14 +122,12 @@ class _SignUpState extends State<SignUp> {
         ));
   }
 
-  Future emitirRegistro(String data) async {
-    socket.emit('registro', data);
-  }
-
-  Future<dynamic> estaRegistrado() async {
+  Future<dynamic> estaRegistrado(String json) async {
+    socket.emit('registro', json);
     socket.on('registrado', (data) {
       reg = data;
     });
+
     if (reg == 0) {
       logger.w(reg);
       return showDialog(

@@ -28,8 +28,14 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    socket = IO.io("http://10.0.2.2:5000",
-        IO.OptionBuilder().setTransports(['websocket']).build());
+    socket = IO.io(
+        "http://10.0.2.2:5000",
+        IO.OptionBuilder()
+            .setTransports(['websocket'])
+            .disableAutoConnect()
+            .setExtraHeaders({'foo': 'bar'})
+            .build());
+    socket.connect();
     _connectSocket();
   }
 
