@@ -126,46 +126,46 @@ class _SignUpState extends State<SignUp> {
     socket.emit('registro', json);
     socket.on('registrado', (data) {
       reg = data;
-    });
 
-    if (reg == 0) {
-      logger.w(reg);
-      return showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text("Usuario registrado"),
-            content: const Text("Este usuario ya está registrado."),
-            actions: [
-              TextButton(
-                child: const Text("Probar de nuevo"),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        },
-      );
-    } else if (reg == 1) {
-      logger.w(reg);
-      return showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text("Usuario creado"),
-            content: const Text("Te has registrado con éxito!"),
-            actions: [
-              TextButton(
-                child: const Text("Iniciar sesión"),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        },
-      );
-    }
+      if (reg == 0) {
+        logger.w(reg);
+        return showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text("Usuario registrado"),
+              content: const Text("Este usuario ya está registrado."),
+              actions: [
+                TextButton(
+                  child: const Text("Probar de nuevo"),
+                  onPressed: () {
+                    Navigator.of(context, rootNavigator: true).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      } else if (reg == 1) {
+        logger.w(reg);
+        return showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text("Usuario creado"),
+              content: const Text("Te has registrado con éxito!"),
+              actions: [
+                TextButton(
+                  child: const Text("Iniciar sesión"),
+                  onPressed: () {
+                    Navigator.of(context, rootNavigator: true).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      }
+    });
   }
 }
