@@ -23,10 +23,6 @@ def handle_new_user(new_user):
     # Decodificar JSON
     nuevo_usuario = json.loads(new_user)
 
-    # Asignar campos a variables
-    nombre = str(nuevo_usuario['name'])
-    usuario = str(nuevo_usuario['username'])
-
     # Verificar si el usuario ya existe
     usuario_existente = collection_usuarios.find_one(nuevo_usuario)
 
@@ -36,9 +32,11 @@ def handle_new_user(new_user):
         results = collection_usuarios.insert_one(nuevo_usuario)
         if results.acknowledged:
             print("OK")
+            socketio.emit('registrado', 0)
         else:
             print("Error en la insercción")
-
+            socketio.emit('registrado', 1)
 
 if __name__ == '__main__':
     socketio.run(app, debug=True)
+    
