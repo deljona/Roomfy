@@ -33,9 +33,11 @@ def handle_new_user(new_user):
     if usuario_existente:
         print('El usuario ya existe en la colección')
     else:
-        print('El usuario no existe en la colección')
         results = collection_usuarios.insert_one(nuevo_usuario)
-        print(results.inserted_id)
+        if results.acknowledged:
+            print("OK")
+        else:
+            print("Error en la insercción")
 
 
 if __name__ == '__main__':
