@@ -24,24 +24,18 @@ def handle_new_user(new_user):
     nuevo_usuario = json.loads(new_user)
 
     # Asignar campos a variables
-    nombre = nuevo_usuario['name']
-    usuario = nuevo_usuario['username']
+    nombre = str(nuevo_usuario['name'])
+    usuario = str(nuevo_usuario['username'])
 
-    # Crear cursor
-    cursor = collection_usuarios.find()
+    # Verificar si el usuario ya existe
+    usuario_existente = collection_usuarios.find_one(nuevo_usuario)
 
-    # Comprobar disponibilidad
-    for user in cursor:
-        nombre_registrado = user['name']
-        usuario_registrado = user['username']
-        if (nombre.__eq__(nombre_registrado) and usuario.__eq__(usuario_registrado)):
-            print(f"Ya existe el usuario: {nuevo_usuario}")
-            socketio.emit('registrado', 0)
-            break
+    if usuario_existente:
+        print('El usuario ya existe en la colección')
     else:
-        collection_usuarios.insert_one(nuevo_usuario)
-        socketio.emit('registrado', 1)
-        print(f"Nuevo usuario registrado: {nuevo_usuario}")
+        print('El usuario no existe en la colección')
+        results = collection_usuarios.insert_one(nuevo_usuario)
+        print(results.inserted_id)
 
 
 if __name__ == '__main__':

@@ -1,10 +1,10 @@
 import 'package:chat/screens/login.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:socket_io_client/socket_io_client.dart' as io;
 
 var logger = Logger(printer: PrettyPrinter());
-late IO.Socket socket;
+late io.Socket socket;
 
 main() {
   logger.i("Building App...");
@@ -28,9 +28,9 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    socket = IO.io(
+    socket = io.io(
         "http://10.0.2.2:5000",
-        IO.OptionBuilder()
+        io.OptionBuilder()
             .setTransports(['websocket'])
             .disableAutoConnect()
             .setExtraHeaders({'foo': 'bar'})

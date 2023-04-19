@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
 var logger = Logger(printer: PrettyPrinter());
+String reg = "Error";
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -22,8 +23,6 @@ class _SignUpState extends State<SignUp> {
 
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _userController = TextEditingController();
-
-  int reg = -1;
 
   String? _validarCampo(String? valor) {
     if (valor == null || valor.isEmpty) {
@@ -102,14 +101,14 @@ class _SignUpState extends State<SignUp> {
                     ),
                     const SizedBox(height: 20),
                     ElevatedButton(
-                      onPressed: () async {
+                      onPressed: () {
                         // Instancia un nuevo usuario
                         User nuevoUsuario = User(
                             name: nombreController.text,
                             username: usuarioController.text);
                         String jsonString = jsonEncode(nuevoUsuario);
                         if (_formKeySignUp.currentState!.validate()) {
-                          await estaRegistrado(jsonString);
+                          socket.emit('registro', jsonString);
                         }
                       },
                       child: const Text('Registrarme'),
@@ -120,52 +119,5 @@ class _SignUpState extends State<SignUp> {
             ]),
           )),
         ));
-  }
-
-  Future<dynamic> estaRegistrado(String json) async {
-    socket.emit('registro', json);
-    socket.on('registrado', (data) {
-      reg = data;
-
-      if (reg == 0) {
-        logger.w(reg);
-        return showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text("Usuario registrado"),
-              content: const Text("Este usuario ya está registrado."),
-              actions: [
-                TextButton(
-                  child: const Text("Probar de nuevo"),
-                  onPressed: () {
-                    Navigator.of(context, rootNavigator: true).pop();
-                  },
-                ),
-              ],
-            );
-          },
-        );
-      } else if (reg == 1) {
-        logger.w(reg);
-        return showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text("Usuario creado"),
-              content: const Text("Te has registrado con éxito!"),
-              actions: [
-                TextButton(
-                  child: const Text("Iniciar sesión"),
-                  onPressed: () {
-                    Navigator.of(context, rootNavigator: true).pop();
-                  },
-                ),
-              ],
-            );
-          },
-        );
-      }
-    });
   }
 }
