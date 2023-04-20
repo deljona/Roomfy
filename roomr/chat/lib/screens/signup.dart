@@ -15,6 +15,7 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+  late int estaRegistrado = -2;
   final _formKeySignUp = GlobalKey<FormState>();
 
   final nombreController = TextEditingController();
@@ -22,8 +23,6 @@ class _SignUpState extends State<SignUp> {
 
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _userController = TextEditingController();
-
-  int reg = -1;
 
   String? _validarCampo(String? valor) {
     if (valor == null || valor.isEmpty) {
@@ -102,15 +101,22 @@ class _SignUpState extends State<SignUp> {
                     ),
                     const SizedBox(height: 20),
                     ElevatedButton(
-                      onPressed: () async {
-                        // Instancia un nuevo usuario
-                        User nuevoUsuario = User(
-                            name: nombreController.text,
-                            username: usuarioController.text);
-                        String jsonString = jsonEncode(nuevoUsuario);
-                        if (_formKeySignUp.currentState!.validate()) {
-                          await procesoRegistro(jsonString);
-                        }
+                      onPressed: () {
+                        setState(() async {
+                          User nuevoUsuario = User(
+                              name: nombreController.text,
+                              username: usuarioController.text);
+
+                          String jsonString = jsonEncode(nuevoUsuario);
+
+                          if (_formKeySignUp.currentState!.validate()) {
+                            socket.emit('registro', jsonString);
+                            socket.on('registrado', (data) {
+                              estaRegistrado = data;
+                            });
+                          }
+                          logger.w(estaRegistrado);
+                        });
                       },
                       child: const Text('Registrarme'),
                     ),
@@ -120,19 +126,5 @@ class _SignUpState extends State<SignUp> {
             ]),
           )),
         ));
-  }
-
-  Future<void> procesoRegistro(String json) async {
-    socket.emit('registro', json);
-    Future.delayed(const Duration(milliseconds: 5), () {
-      socket.on('registrado', (data) {
-        reg = data;
-        if (reg == 0) {
-          logger.w(reg);
-        } else if (reg == 1) {
-          logger.w(reg);
-        }
-      });
-    });
   }
 }
