@@ -19,7 +19,6 @@ main() {
       io.OptionBuilder()
           .setTransports(['websocket'])
           .disableAutoConnect()
-          .setExtraHeaders({'foo': 'bar'})
           .build());
   socket.connect();
   connectSocket();
