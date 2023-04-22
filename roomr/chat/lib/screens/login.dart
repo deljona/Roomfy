@@ -1,4 +1,3 @@
-import 'package:chat/main.dart';
 import 'package:chat/models/user.dart';
 import 'package:chat/screens/signup.dart';
 import 'package:flutter/material.dart';
@@ -101,9 +100,7 @@ class _LoginState extends State<Login> {
                         User nuevoUsuario = User(
                             name: nombreController.text,
                             username: usuarioController.text);
-                        if (_formKeyLogin.currentState!.validate()) {
-                          socket.emit('registro', nuevoUsuario.toJson());
-                        }
+                        if (_formKeyLogin.currentState!.validate()) {}
                       },
                       child: const Text('Iniciar sesión'),
                     ),
@@ -115,8 +112,7 @@ class _LoginState extends State<Login> {
                 onPressed: () {
                   nombreController.clear();
                   usuarioController.clear();
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const SignUp()));
+                  Navigator.pushNamed(context, '/registro');
                 },
                 child: const Text('Crear nueva cuenta'),
               )

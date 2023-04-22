@@ -8,21 +8,6 @@ var logger = Logger(printer: PrettyPrinter());
 late io.Socket socket;
 
 main() {
-  connectSocket() {
-    socket.onConnect((data) => logger.i('Conexión establecida.'));
-    socket.onConnectError((data) => logger.e('Error de conexión: $data'));
-    socket.onDisconnect((data) => logger.w('Socket.IO desconectado.'));
-  }
-
-  socket = io.io(
-      "http://10.0.2.2:5000",
-      io.OptionBuilder()
-          .setTransports(['websocket'])
-          .disableAutoConnect()
-          .build());
-  socket.connect();
-  connectSocket();
-
   logger.i("Building App...");
   runApp(const MyApp());
 }
@@ -35,9 +20,18 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  _connectSocket() {
+    socket.onConnect((data) => logger.i('Conexión establecida.'));
+    socket.onConnectError((data) => logger.e('Error de conexión: $data'));
+    socket.onDisconnect((data) => logger.w('Socket.IO desconectado.'));
+  }
+
   @override
   void initState() {
     super.initState();
+    socket = io.io("http://10.0.2.2:5000",
+        io.OptionBuilder().setTransports(['websocket']).build());
+    _connectSocket();
   }
 
   @override

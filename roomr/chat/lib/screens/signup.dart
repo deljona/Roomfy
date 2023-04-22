@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
 var logger = Logger(printer: PrettyPrinter());
+int estaRegistrado = -2;
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -15,7 +16,6 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  late int estaRegistrado = -2;
   final _formKeySignUp = GlobalKey<FormState>();
 
   final nombreController = TextEditingController();
@@ -100,23 +100,18 @@ class _SignUpState extends State<SignUp> {
                       },
                     ),
                     const SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: () {
-                        setState(() async {
-                          User nuevoUsuario = User(
-                              name: nombreController.text,
-                              username: usuarioController.text);
+                    FilledButton(
+                      onPressed: () async {
+                        User nuevoUsuario = User(
+                            name: nombreController.text,
+                            username: usuarioController.text);
 
-                          String jsonString = jsonEncode(nuevoUsuario);
+                        String jsonString = jsonEncode(nuevoUsuario);
 
-                          if (_formKeySignUp.currentState!.validate()) {
-                            socket.emit('registro', jsonString);
-                            socket.on('registrado', (data) {
-                              estaRegistrado = data;
-                            });
-                          }
-                          logger.w(estaRegistrado);
-                        });
+                        if (_formKeySignUp.currentState!.validate()) {
+                          await register(jsonString);
+                          await isRegister();
+                        }
                       },
                       child: const Text('Registrarme'),
                     ),
@@ -126,5 +121,55 @@ class _SignUpState extends State<SignUp> {
             ]),
           )),
         ));
+  }
+
+  Future<void> register(String json) async {
+    socket.emit('registro', json);
+  }
+
+  Future<void> isRegister() async {
+    socket.once('registrado', (data) {
+      estaRegistrado = data;
+      if (estaRegistrado == 0) {
+        logger.w(estaRegistrado);
+        return showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text("¡Bien!"),
+              content: const Text("Te has registrado con éxito!"),
+              actions: [
+                TextButton(
+                  child: const Text("Iniciar sesión"),
+                  onPressed: () {
+                    Navigator.of(context, rootNavigator: true).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      } else if (estaRegistrado == 1) {
+        logger.w(estaRegistrado);
+        return showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text("Vaya..."),
+              content: const Text("Parece que este usuario ya existe."),
+              actions: [
+                TextButton(
+                  child: const Text("Probar de nuevo"),
+                  onPressed: () {
+                    Navigator.of(context, rootNavigator: true).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      }
+      logger.d(estaRegistrado);
+    });
   }
 }

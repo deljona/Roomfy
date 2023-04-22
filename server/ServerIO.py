@@ -37,11 +37,9 @@ def handle_new_user(new_user):
         if results.acknowledged:
             logging.info(f'Se ha registrado un nuevo usuario: {nuevo_usuario}')
             socketio.emit('registrado', 0)
-            exit()
     else:
         logging.info(f'Ya esta registrado este usuario: {nuevo_usuario}')
         socketio.emit('registrado', 1)
-        exit()
 
 
 if __name__ == '__main__':
