@@ -1,9 +1,13 @@
+import 'dart:convert';
+
+import 'package:chat/main.dart';
 import 'package:chat/models/user.dart';
-import 'package:chat/screens/signup.dart';
+import 'package:chat/screens/chat.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
 var logger = Logger(printer: PrettyPrinter());
+int estaLogin = -2;
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -36,12 +40,12 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: SizedBox(
-              child: Center(
-                  child: Image.asset(
-            "assets/images/logo.png",
-            scale: 1.5,
-          ))),
+          title: Center(
+            child: Image.asset(
+              "assets/images/logo.png",
+              scale: 1.7,
+            ),
+          ),
         ),
         body: SingleChildScrollView(
           child: Center(
@@ -96,11 +100,18 @@ class _LoginState extends State<Login> {
                     ),
                     const SizedBox(height: 20),
                     ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         User nuevoUsuario = User(
                             name: nombreController.text,
                             username: usuarioController.text);
-                        if (_formKeyLogin.currentState!.validate()) {}
+
+                        String jsonString = jsonEncode(nuevoUsuario);
+
+                        if (_formKeyLogin.currentState!.validate()) {
+                          await login(jsonString);
+                          await isLogin();
+                        }
+                        logger.w(socket.id);
                       },
                       child: const Text('Iniciar sesión'),
                     ),
@@ -119,5 +130,43 @@ class _LoginState extends State<Login> {
             ]),
           )),
         ));
+  }
+
+  Future<void> login(String json) async {
+    socket.emit('login', json);
+  }
+
+  Future<void> isLogin() async {
+    socket.once('logeado', (data) {
+      estaLogin = data;
+      if (estaLogin == 0) {
+        String username = '${nombreController.text}@${nombreController.text}';
+        logger.w(estaLogin);
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => Chat(username: username)),
+        );
+      } else if (estaLogin == 1) {
+        logger.w(estaLogin);
+        return showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text("Vaya..."),
+              content: const Text("Este usuario no existe."),
+              actions: [
+                TextButton(
+                  child: const Text("Probar de nuevo"),
+                  onPressed: () {
+                    Navigator.of(context, rootNavigator: true).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      }
+      logger.d(estaLogin);
+    });
   }
 }

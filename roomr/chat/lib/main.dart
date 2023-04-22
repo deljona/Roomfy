@@ -1,3 +1,4 @@
+import 'package:chat/screens/chat.dart';
 import 'package:chat/screens/login.dart';
 import 'package:chat/screens/signup.dart';
 import 'package:flutter/material.dart';
@@ -40,9 +41,9 @@ class _MyAppState extends State<MyApp> {
         theme: ThemeData(useMaterial3: true),
         debugShowCheckedModeBanner: false,
         routes: {
-          '/': (context) => const Login(),
+          '/login': (context) => const Login(),
           '/registro': (context) => const SignUp()
         },
-        initialRoute: '/');
+        initialRoute: '/login');
   }
 }
