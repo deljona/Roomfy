@@ -41,20 +41,32 @@ def handle_new_user(new_user):
         logging.info(f'Ya esta registrado este usuario: {nuevo_usuario}')
         socketio.emit('registrado', 1)
 
+
 @socketio.on('login')
 def login(user):
     # Decodificar JSON
     usuario_registrado = json.loads(user)
 
     # Verificar si el usuario está en la BBDD
-    usuario_existente = collection_usuarios.find_one(usuario_registrado)
-    
-    if usuario_existente:
+    usuario_existe = collection_usuarios.find_one(usuario_registrado)
+
+    if usuario_existe:
         logging.info(f'Inicio de sesión: {usuario_registrado}')
         socketio.emit('logeado', 0)
     else:
         logging.info(f'Error de login: {usuario_registrado}')
         socketio.emit('logeado', 1)
+
+
+@socketio.on('message')
+def listen_message(message):
+    # Decodificar JSON
+    new_message = json.loads(message)
+    logging.debug(new_message)
+
+    # Enviar respuesta al cliente
+    socketio.emit('responseMessage', new_message)
+
 
 if __name__ == '__main__':
     logging.info('=== Debug Start ===')

@@ -1,4 +1,3 @@
-import 'package:chat/screens/chat.dart';
 import 'package:chat/screens/login.dart';
 import 'package:chat/screens/signup.dart';
 import 'package:flutter/material.dart';

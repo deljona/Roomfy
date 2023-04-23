@@ -141,13 +141,11 @@ class _LoginState extends State<Login> {
       estaLogin = data;
       if (estaLogin == 0) {
         String username = '${nombreController.text}@${nombreController.text}';
-        logger.w(estaLogin);
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => Chat(username: username)),
         );
       } else if (estaLogin == 1) {
-        logger.w(estaLogin);
         return showDialog(
           context: context,
           builder: (BuildContext context) {

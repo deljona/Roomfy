@@ -131,7 +131,6 @@ class _SignUpState extends State<SignUp> {
     socket.once('registrado', (data) {
       estaRegistrado = data;
       if (estaRegistrado == 0) {
-        logger.w(estaRegistrado);
         return showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -150,7 +149,6 @@ class _SignUpState extends State<SignUp> {
           },
         );
       } else if (estaRegistrado == 1) {
-        logger.w(estaRegistrado);
         return showDialog(
           context: context,
           builder: (BuildContext context) {
