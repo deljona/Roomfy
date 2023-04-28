@@ -26,7 +26,7 @@ class _SignUpState extends State<SignUp> {
 
   String? _validarCampo(String? valor) {
     if (valor == null || valor.isEmpty) {
-      return 'Este campo es requerido';
+      return 'Este campo es obligatorio';
     }
     final RegExp regExp = RegExp(r'^[a-z0-9]{1,10}$');
     if (!regExp.hasMatch(valor)) {
@@ -44,7 +44,7 @@ class _SignUpState extends State<SignUp> {
             style: TextStyle(
                 fontSize: 26,
                 fontWeight: FontWeight.bold,
-                color: Color(0xff252525)),
+                color: Color.fromARGB(255, 0, 0, 0)),
           ),
         ),
         body: SingleChildScrollView(
@@ -52,17 +52,18 @@ class _SignUpState extends State<SignUp> {
               child: Padding(
             padding: const EdgeInsets.fromLTRB(40, 8, 40, 8),
             child: Column(children: [
+              const SizedBox(height: 40),
               const Text(
                 'Los usuarios te conocerán como: ',
-                style: TextStyle(fontSize: 16),
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 40),
               Text(
                 "${_nameController.text}@${_userController.text}",
                 style:
                     const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
               ),
-              const SizedBox(height: 40),
+              const SizedBox(height: 70),
               Form(
                 key: _formKeySignUp,
                 child: Column(
@@ -72,9 +73,20 @@ class _SignUpState extends State<SignUp> {
                       maxLength: 10,
                       validator: _validarCampo,
                       controller: nombreController,
-                      decoration: const InputDecoration(
-                          prefixIcon: Icon(Icons.person),
-                          border: OutlineInputBorder(),
+                      decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 10.0, horizontal: 10.0),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                  color: Color(0xff3A00E5), width: 1.0),
+                              borderRadius: BorderRadius.circular(10.0)),
+                          errorBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                  color: Colors.red, width: 1.0),
+                              borderRadius: BorderRadius.circular(10.0)),
+                          prefixIcon: const Icon(Icons.person),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0)),
                           labelText: 'Nombre'),
                       onChanged: (text) {
                         setState(() {
@@ -83,14 +95,25 @@ class _SignUpState extends State<SignUp> {
                         });
                       },
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 35),
                     TextFormField(
                       maxLength: 10,
                       validator: _validarCampo,
                       controller: usuarioController,
-                      decoration: const InputDecoration(
-                          prefixIcon: Icon(Icons.alternate_email),
-                          border: OutlineInputBorder(),
+                      decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 10.0, horizontal: 10.0),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                  color: Color(0xff3A00E5), width: 1.0),
+                              borderRadius: BorderRadius.circular(10.0)),
+                          errorBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                  color: Colors.red, width: 1.0),
+                              borderRadius: BorderRadius.circular(10.0)),
+                          prefixIcon: const Icon(Icons.alternate_email),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0)),
                           labelText: 'Usuario'),
                       onChanged: (text) {
                         setState(() {
@@ -99,8 +122,16 @@ class _SignUpState extends State<SignUp> {
                         });
                       },
                     ),
-                    const SizedBox(height: 20),
-                    FilledButton(
+                    const SizedBox(height: 80),
+                    ElevatedButton(
+                      style: ButtonStyle(
+                          foregroundColor: MaterialStateProperty.all(
+                              const Color(0xffffffff)),
+                          backgroundColor: MaterialStateProperty.all(
+                              const Color(0xff3A00E5)),
+                          shape: MaterialStateProperty.all(
+                              RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8)))),
                       onPressed: () async {
                         User nuevoUsuario = User(
                             name: nombreController.text,

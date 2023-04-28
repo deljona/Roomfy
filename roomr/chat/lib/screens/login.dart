@@ -2,9 +2,12 @@ import 'dart:convert';
 
 import 'package:chat/main.dart';
 import 'package:chat/models/user.dart';
+import 'package:chat/providers/chat.dart';
 import 'package:chat/screens/chat.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+
+import 'package:provider/provider.dart';
 
 var logger = Logger(printer: PrettyPrinter());
 int estaLogin = -2;
@@ -53,13 +56,13 @@ class _LoginState extends State<Login> {
             padding: const EdgeInsets.fromLTRB(40, 8, 40, 8),
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              const SizedBox(height: 20),
+              const SizedBox(height: 80),
               const Text(
                 "Inicia sesión",
                 style: TextStyle(
                     fontSize: 26,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xff252525)),
+                    color: Color.fromARGB(255, 0, 0, 0)),
               ),
               const SizedBox(height: 20),
               Form(
@@ -71,9 +74,20 @@ class _LoginState extends State<Login> {
                       maxLength: 10,
                       validator: _validarCampo,
                       controller: nombreController,
-                      decoration: const InputDecoration(
-                          prefixIcon: Icon(Icons.person),
-                          border: OutlineInputBorder(),
+                      decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 10.0, horizontal: 10.0),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                  color: Color(0xff3A00E5), width: 1.0),
+                              borderRadius: BorderRadius.circular(10.0)),
+                          errorBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                  color: Colors.red, width: 1.0),
+                              borderRadius: BorderRadius.circular(10.0)),
+                          prefixIcon: const Icon(Icons.person),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0)),
                           labelText: 'Nombre'),
                       onChanged: (text) {
                         setState(() {
@@ -82,14 +96,25 @@ class _LoginState extends State<Login> {
                         });
                       },
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 35),
                     TextFormField(
                       maxLength: 10,
                       validator: _validarCampo,
                       controller: usuarioController,
-                      decoration: const InputDecoration(
-                          prefixIcon: Icon(Icons.alternate_email),
-                          border: OutlineInputBorder(),
+                      decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 10.0, horizontal: 10.0),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                  color: Color(0xff3A00E5), width: 1.0),
+                              borderRadius: BorderRadius.circular(10.0)),
+                          errorBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                  color: Colors.red, width: 1.0),
+                              borderRadius: BorderRadius.circular(10.0)),
+                          prefixIcon: const Icon(Icons.alternate_email),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0)),
                           labelText: 'Usuario'),
                       onChanged: (text) {
                         setState(() {
@@ -98,8 +123,16 @@ class _LoginState extends State<Login> {
                         });
                       },
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 80),
                     ElevatedButton(
+                      style: ButtonStyle(
+                          foregroundColor: MaterialStateProperty.all(
+                              const Color(0xffffffff)),
+                          backgroundColor: MaterialStateProperty.all(
+                              const Color(0xff3A00E5)),
+                          shape: MaterialStateProperty.all(
+                              RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8)))),
                       onPressed: () async {
                         User nuevoUsuario = User(
                             name: nombreController.text,
@@ -118,7 +151,7 @@ class _LoginState extends State<Login> {
                   ],
                 ),
               ),
-              const SizedBox(height: 200),
+              const SizedBox(height: 125),
               TextButton(
                 onPressed: () {
                   nombreController.clear();
@@ -140,10 +173,14 @@ class _LoginState extends State<Login> {
     socket.once('logeado', (data) {
       estaLogin = data;
       if (estaLogin == 0) {
-        String username = '${nombreController.text}@${nombreController.text}';
+        String username = '${nombreController.text}@${usuarioController.text}';
+
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => Chat(username: username)),
+          MaterialPageRoute(
+              builder: (_) => ChangeNotifierProvider(
+                  create: (context) => ChatProvider(),
+                  child: Chat(username: username))),
         );
       } else if (estaLogin == 1) {
         return showDialog(
