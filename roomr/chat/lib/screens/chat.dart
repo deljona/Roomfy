@@ -94,7 +94,9 @@ class _ChatState extends State<Chat> {
                                 Bubble(
                                   margin: const BubbleEdges.only(top: 10),
                                   radius: const Radius.circular(20.0),
-                                  nip: BubbleNip.rightTop,
+                                  nip: message.senderUsername == widget.username
+                                      ? BubbleNip.rightTop
+                                      : BubbleNip.leftTop,
                                   color:
                                       const Color.fromRGBO(225, 255, 199, 1.0),
                                   child: Text(message.message,
