@@ -1,14 +1,18 @@
 class Message {
   final String message;
-  String? sendAt = getTime();
+  final String senderUsername;
+  final DateTime sentAt;
 
-  Message({required this.message, this.sendAt});
+  Message(
+      {required this.message,
+      required this.senderUsername,
+      required this.sentAt});
 
-  Map<String, dynamic> toJson() => {'message': message, 'sendAt': sendAt};
-
-  static String getTime() {
-    var hour = DateTime.now().hour.toString();
-    var minute = DateTime.now().minute.toString().padLeft(2, '0');
-    return "$hour:$minute";
+  factory Message.fromJson(Map<String, dynamic> message) {
+    return Message(
+      message: message['message'],
+      senderUsername: message['senderUsername'],
+      sentAt: DateTime.fromMicrosecondsSinceEpoch(message['sentAt']),
+    );
   }
 }
