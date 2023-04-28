@@ -78,20 +78,30 @@ class _ChatState extends State<Chat> {
               itemBuilder: (context, index) {
                 final message = provider.messages[index];
                 return Wrap(
-                  alignment: message.senderUsername == widget.username
-                      ? WrapAlignment.end
-                      : WrapAlignment.start,
-                  children: [
-                    Bubble(
-                      margin: const BubbleEdges.only(top: 10),
-                      radius: const Radius.circular(20.0),
-                      alignment: Alignment.topRight,
-                      nip: BubbleNip.rightTop,
-                      color: const Color.fromRGBO(225, 255, 199, 1.0),
-                      child: Text(message.message, textAlign: TextAlign.right),
-                    )
-                  ],
-                );
+                    alignment: message.senderUsername == widget.username
+                        ? WrapAlignment.end
+                        : WrapAlignment.start,
+                    children: [
+                      Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment:
+                                  message.senderUsername == widget.username
+                                      ? CrossAxisAlignment.end
+                                      : CrossAxisAlignment.start,
+                              children: [
+                                Bubble(
+                                  margin: const BubbleEdges.only(top: 10),
+                                  radius: const Radius.circular(20.0),
+                                  nip: BubbleNip.rightTop,
+                                  color:
+                                      const Color.fromRGBO(225, 255, 199, 1.0),
+                                  child: Text(message.message,
+                                      textAlign: TextAlign.right),
+                                )
+                              ]))
+                    ]);
               },
               separatorBuilder: (_, index) => const SizedBox(
                 height: 5,
