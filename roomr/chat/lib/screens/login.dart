@@ -4,6 +4,7 @@ import 'package:chat/main.dart';
 import 'package:chat/models/user.dart';
 import 'package:chat/providers/chat.dart';
 import 'package:chat/screens/chat.dart';
+import 'package:chat/screens/principal.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
@@ -180,7 +181,7 @@ class _LoginState extends State<Login> {
           MaterialPageRoute(
               builder: (_) => ChangeNotifierProvider(
                   create: (context) => ChatProvider(),
-                  child: Chat(username: username))),
+                  child: Principal(username: username))),
         );
       } else if (estaLogin == 1) {
         return showDialog(

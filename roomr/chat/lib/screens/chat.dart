@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ui';
 
 import 'package:chat/main.dart';
 import 'package:chat/models/message.dart';
@@ -55,99 +54,82 @@ class _ChatState extends State<Chat> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.username),
-          actions: <Widget>[
-            PopupMenuButton(
-              icon: const Icon(Icons.more_vert),
-              tooltip: 'Opciones',
-              itemBuilder: (context) => <PopupMenuEntry<MenuItem>>[
-                const PopupMenuItem<MenuItem>(
-                  height: 8,
-                  value: MenuItem.cerrarSesion,
-                  onTap: null,
-                  child: Text('Cerrar sesión'),
-                )
-              ],
-            ),
-          ],
-        ),
-        body: Column(children: [
-          Expanded(
-              child: Consumer<ChatProvider>(
-            builder: (_, provider, __) => ListView.separated(
-              padding: const EdgeInsets.all(16),
-              itemBuilder: (context, index) {
-                final message = provider.messages[index];
-                return Wrap(
-                    alignment: message.senderUsername == widget.username
-                        ? WrapAlignment.end
-                        : WrapAlignment.start,
-                    children: [
-                      Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment:
-                                  message.senderUsername == widget.username
-                                      ? CrossAxisAlignment.end
-                                      : CrossAxisAlignment.start,
-                              children: [
-                                Bubble(
-                                  margin: const BubbleEdges.only(top: 10),
-                                  radius: const Radius.circular(20.0),
-                                  nip: message.senderUsername == widget.username
-                                      ? BubbleNip.rightTop
-                                      : BubbleNip.leftTop,
-                                  color:
-                                      const Color.fromRGBO(225, 255, 199, 1.0),
-                                  child: Text(message.message,
-                                      textAlign: TextAlign.right),
-                                )
-                              ]))
-                    ]);
-              },
-              separatorBuilder: (_, index) => const SizedBox(
-                height: 5,
-              ),
-              itemCount: provider.messages.length,
-            ),
-          )),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                color: Colors.grey.shade200,
-              ),
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16,
-              ),
-              child: SafeArea(
-                child: Row(
+      body: Column(children: [
+        Expanded(
+            child: Consumer<ChatProvider>(
+          builder: (_, provider, __) => ListView.separated(
+            padding: const EdgeInsets.all(16),
+            itemBuilder: (context, index) {
+              final message = provider.messages[index];
+              return Wrap(
+                  alignment: message.senderUsername == widget.username
+                      ? WrapAlignment.end
+                      : WrapAlignment.start,
                   children: [
-                    Expanded(
-                      child: TextField(
-                        controller: _messageInputController,
-                        decoration: const InputDecoration(
-                          hintText: 'Mensaje',
-                          border: InputBorder.none,
-                        ),
+                    Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment:
+                                message.senderUsername == widget.username
+                                    ? CrossAxisAlignment.end
+                                    : CrossAxisAlignment.start,
+                            children: [
+                              Bubble(
+                                margin: const BubbleEdges.only(top: 10),
+                                radius: const Radius.circular(20.0),
+                                nip: message.senderUsername == widget.username
+                                    ? BubbleNip.rightTop
+                                    : BubbleNip.leftTop,
+                                color: const Color.fromRGBO(225, 255, 199, 1.0),
+                                child: Text(message.message,
+                                    textAlign: TextAlign.right),
+                              )
+                            ]))
+                  ]);
+            },
+            separatorBuilder: (_, index) => const SizedBox(
+              height: 5,
+            ),
+            itemCount: provider.messages.length,
+          ),
+        )),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              color: Colors.grey.shade200,
+            ),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16,
+            ),
+            child: SafeArea(
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: _messageInputController,
+                      decoration: const InputDecoration(
+                        hintText: 'Mensaje',
+                        border: InputBorder.none,
                       ),
                     ),
-                    IconButton(
-                      onPressed: () {
-                        if (_messageInputController.text.trim().isNotEmpty) {
-                          _sendMessage();
-                        }
-                      },
-                      icon: const Icon(Icons.send_rounded),
-                    )
-                  ],
-                ),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      if (_messageInputController.text.trim().isNotEmpty) {
+                        _sendMessage();
+                      }
+                    },
+                    icon: const Icon(Icons.send_rounded),
+                  )
+                ],
               ),
             ),
-          )
-        ]));
+          ),
+        )
+      ]),
+    );
   }
 }
