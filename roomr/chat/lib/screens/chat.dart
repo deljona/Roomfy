@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ui';
 
 import 'package:chat/main.dart';
 import 'package:chat/models/message.dart';
@@ -62,6 +63,7 @@ class _ChatState extends State<Chat> {
               tooltip: 'Opciones',
               itemBuilder: (context) => <PopupMenuEntry<MenuItem>>[
                 const PopupMenuItem<MenuItem>(
+                  height: 8,
                   value: MenuItem.cerrarSesion,
                   onTap: null,
                   child: Text('Cerrar sesión'),
@@ -111,34 +113,38 @@ class _ChatState extends State<Chat> {
               itemCount: provider.messages.length,
             ),
           )),
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.grey.shade200,
-            ),
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16,
-            ),
-            child: SafeArea(
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: _messageInputController,
-                      decoration: const InputDecoration(
-                        hintText: 'Mensaje',
-                        border: InputBorder.none,
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: Colors.grey.shade200,
+              ),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16,
+              ),
+              child: SafeArea(
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: _messageInputController,
+                        decoration: const InputDecoration(
+                          hintText: 'Mensaje',
+                          border: InputBorder.none,
+                        ),
                       ),
                     ),
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      if (_messageInputController.text.trim().isNotEmpty) {
-                        _sendMessage();
-                      }
-                    },
-                    icon: const Icon(Icons.send),
-                  )
-                ],
+                    IconButton(
+                      onPressed: () {
+                        if (_messageInputController.text.trim().isNotEmpty) {
+                          _sendMessage();
+                        }
+                      },
+                      icon: const Icon(Icons.send_rounded),
+                    )
+                  ],
+                ),
               ),
             ),
           )
