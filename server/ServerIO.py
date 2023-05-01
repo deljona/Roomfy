@@ -66,6 +66,17 @@ def listen_message(message):
 
     # Enviar respuesta al cliente
     socketio.emit('responseMessage', new_message)
+    
+    #Encriptar mensaje
+    clave = Fernet.generate_key()
+    f = Fernet(clave)
+    
+    mensaje = str(new_message['message'])
+    msg_cifrado = f.encrypt(mensaje.encode())
+    
+    new_message['message'] = msg_cifrado
+    
+    collection_mensajes.insert_one(new_message)
 
 
 if __name__ == '__main__':

@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:chat/main.dart';
 import 'package:chat/models/user.dart';
 import 'package:chat/providers/chat.dart';
-import 'package:chat/screens/chat.dart';
 import 'package:chat/screens/principal.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
@@ -175,7 +174,6 @@ class _LoginState extends State<Login> {
       estaLogin = data;
       if (estaLogin == 0) {
         String username = '${nombreController.text}@${usuarioController.text}';
-
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(

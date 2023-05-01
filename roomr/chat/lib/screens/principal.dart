@@ -39,7 +39,6 @@ class _PrincipalState extends State<Principal> {
     return Scaffold(
       // ENCABEZADO
       appBar: AppBar(
-        backgroundColor: Colors.white,
         title: Text(widget.username),
         actions: <Widget>[
           PopupMenuButton(
