@@ -10,15 +10,23 @@ class Principal extends StatefulWidget {
   State<Principal> createState() => _PrincipalState();
 }
 
-// Lista de páginas
-List<Widget> pages = <Widget>[
-  const Chat(username: AutofillHints.username),
-  const Users(),
-];
-
 class _PrincipalState extends State<Principal> {
+  // Lista de páginas
+  List<Widget> pages = [];
+
+  @override
+  void initState() {
+    super.initState();
+    pages = <Widget>[
+      Chat(
+        username: widget.username,
+      ),
+      const Users(),
+    ];
+  }
+
   // Indice actual de la página
-  int selectedIndex = 1;
+  int selectedIndex = 0;
 
   void onItemTapped(int index) {
     setState(() {
@@ -31,6 +39,7 @@ class _PrincipalState extends State<Principal> {
     return Scaffold(
       // ENCABEZADO
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: Text(widget.username),
         actions: <Widget>[
           PopupMenuButton(
