@@ -20,6 +20,18 @@ class Chat extends StatefulWidget {
 class _ChatState extends State<Chat> {
   final TextEditingController _messageInputController = TextEditingController();
 
+  _getMessagesFromDb() {
+    socket.emit('getMsgFromDb');
+    socket.once('getMsgs', (data) {
+      List<dynamic> oldData = data;
+      for (var msg in oldData) {
+        Provider.of<ChatProvider>(context, listen: false)
+            .addNewMessage(Message.fromJson(msg));
+        logger.i(msg['message']);
+      }
+    });
+  }
+
   _responseMessage() {
     socket.on(
         'responseMessage',
@@ -31,17 +43,15 @@ class _ChatState extends State<Chat> {
     String jsonMessage = _messageInputController.text.trim();
     socket.emit(
         'message',
-        jsonEncode({
-          'message': jsonMessage,
-          'senderUsername': widget.username,
-          'sentAt': DateTime.now().minute
-        }));
+        jsonEncode(
+            {'message': jsonMessage, 'senderUsername': widget.username}));
     _messageInputController.clear();
   }
 
   @override
   void initState() {
     super.initState();
+    _getMessagesFromDb();
     _responseMessage();
   }
 

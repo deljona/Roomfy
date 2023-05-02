@@ -21,6 +21,10 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = __SECRET_KEY
 socketio = SocketIO(app)
 
+# Encriptar mensaje
+clave = Fernet.generate_key()
+f = Fernet(clave)
+
 
 @socketio.on('registro')
 def handle_new_user(new_user):
@@ -58,6 +62,16 @@ def login(user):
         socketio.emit('logeado', 1)
 
 
+@socketio.on('getMsgFromDb')
+def getMessagesFromMongoDB():
+    data = []
+    for msg in collection_mensajes.find({}, {'message': 1, 'senderUsername': 1, '_id': 0}):
+        data.append(msg)
+
+    socketio.emit('getMsgs', data)
+    logging.info(data)
+
+
 @socketio.on('message')
 def listen_message(message):
     # Decodificar JSON
@@ -66,16 +80,12 @@ def listen_message(message):
 
     # Enviar respuesta al cliente
     socketio.emit('responseMessage', new_message)
-    
-    #Encriptar mensaje
-    clave = Fernet.generate_key()
-    f = Fernet(clave)
-    
-    mensaje = str(new_message['message'])
-    msg_cifrado = f.encrypt(mensaje.encode())
-    
-    new_message['message'] = msg_cifrado
-    
+
+    # mensaje = str(new_message['message'])
+    # msg_cifrado = f.encrypt(mensaje.encode())
+
+    # new_message['message'] = msg_cifrado
+
     collection_mensajes.insert_one(new_message)
 
 
