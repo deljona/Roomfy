@@ -81,12 +81,10 @@ def listen_message(message):
     # Enviar respuesta al cliente
     socketio.emit('responseMessage', new_message)
 
-    # mensaje = str(new_message['message'])
-    # msg_cifrado = f.encrypt(mensaje.encode())
+    mensaje = str(new_message['message'])
+    msg_cifrado = f.encrypt(mensaje.encode())
 
-    # new_message['message'] = msg_cifrado
-
-    collection_mensajes.insert_one(new_message)
+    collection_mensajes.insert_one(str(msg_cifrado))
 
 
 if __name__ == '__main__':
