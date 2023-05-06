@@ -1,10 +1,9 @@
-import base64
 import json
 import logging
 
 from flask import Flask, render_template
 from flask_socketio import SocketIO
-from cryptography.fernet import Fernet
+import rsa
 
 from pymongo_get_database import get_database
 
@@ -14,17 +13,12 @@ dbname = get_database()
 collection_usuarios = dbname["usuarios"]
 collection_mensajes = dbname["mensajes"]
 
-key = Fernet.generate_key()
-__SECRET_KEY = base64.urlsafe_b64encode(key).decode()
-
 app = Flask(__name__)
-app.config['SECRET_KEY'] = __SECRET_KEY
+app.config['SECRET_KEY'] = 'R3BRb3pqRm9QZ1'
 socketio = SocketIO(app)
 
-# Encriptar mensaje
-clave = Fernet.generate_key()
-f = Fernet(clave)
-
+# Generar claves públicas y privadas
+(public_key, private_key) = rsa.newkeys(512)
 
 @socketio.on('registro')
 def handle_new_user(new_user):
@@ -66,7 +60,8 @@ def login(user):
 def getMessagesFromMongoDB():
     data = []
     for msg in collection_mensajes.find({}, {'message': 1, 'senderUsername': 1, '_id': 0}):
-        data.append(msg)
+        logging.info(msg['message'])
+        # data.append(msg)
 
     socketio.emit('getMsgs', data)
     logging.info(data)
@@ -82,9 +77,16 @@ def listen_message(message):
     socketio.emit('responseMessage', new_message)
 
     mensaje = str(new_message['message'])
-    msg_cifrado = f.encrypt(mensaje.encode())
+    
+    # Codificar la cadena a una cadena de bytes
+    message = mensaje.encode('utf8')
 
-    collection_mensajes.insert_one(str(msg_cifrado))
+    # Encriptar la cadena de bytes con la clave pública
+    crypto = rsa.encrypt(message, public_key)
+
+    new_message['message'] = crypto
+
+    collection_mensajes.insert_one(new_message)
 
 
 if __name__ == '__main__':
