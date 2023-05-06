@@ -3,7 +3,6 @@ import logging
 
 from flask import Flask, render_template
 from flask_socketio import SocketIO
-import rsa
 
 from pymongo_get_database import get_database
 
@@ -16,9 +15,6 @@ collection_mensajes = dbname["mensajes"]
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'R3BRb3pqRm9QZ1'
 socketio = SocketIO(app)
-
-# Generar claves públicas y privadas
-(public_key, private_key) = rsa.newkeys(512)
 
 @socketio.on('registro')
 def handle_new_user(new_user):
@@ -75,16 +71,6 @@ def listen_message(message):
 
     # Enviar respuesta al cliente
     socketio.emit('responseMessage', new_message)
-
-    mensaje = str(new_message['message'])
-    
-    # Codificar la cadena a una cadena de bytes
-    message = mensaje.encode('utf8')
-
-    # Encriptar la cadena de bytes con la clave pública
-    crypto = rsa.encrypt(message, public_key)
-
-    new_message['message'] = crypto
 
     collection_mensajes.insert_one(new_message)
 
