@@ -85,6 +85,10 @@ class _ChatState extends State<Chat> {
                                     ? CrossAxisAlignment.end
                                     : CrossAxisAlignment.start,
                             children: [
+                              if (message.senderUsername != widget.username)
+                                Text(message.senderUsername)
+                              else
+                                const Text(''),
                               Bubble(
                                 margin: const BubbleEdges.only(top: 10),
                                 radius: const Radius.circular(20.0),
@@ -94,7 +98,7 @@ class _ChatState extends State<Chat> {
                                 color: const Color.fromRGBO(225, 255, 199, 1.0),
                                 child: Text(message.message,
                                     textAlign: TextAlign.right),
-                              )
+                              ),
                             ]))
                   ]);
             },
