@@ -57,7 +57,7 @@ def getMessagesFromMongoDB():
     data = []
     for msg in collection_mensajes.find({}, {'message': 1, 'senderUsername': 1, '_id': 0}):
         logging.info(msg['message'])
-        # data.append(msg)
+        data.append(msg)
 
     socketio.emit('getMsgs', data)
     logging.info(data)
