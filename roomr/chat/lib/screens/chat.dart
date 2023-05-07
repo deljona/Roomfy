@@ -98,7 +98,7 @@ class _ChatState extends State<Chat> {
                                 color: const Color.fromRGBO(225, 255, 199, 1.0),
                                 child: Text(message.message,
                                     textAlign: TextAlign.right),
-                              ),
+                              )
                             ]))
                   ]);
             },
