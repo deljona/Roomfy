@@ -107,6 +107,17 @@ class _ChatState extends State<Chat> {
                                       message.senderUsername,
                                       style: const TextStyle(fontSize: 13),
                                     ),
+                                  if (message.senderUsername != widget.username)
+                                    IconButton(
+                                      onPressed: () {},
+                                      icon: const Icon(Icons.reply),
+                                      iconSize: 20,
+                                    ),
+                                  SizedBox(
+                                      width: message.senderUsername ==
+                                              widget.username
+                                          ? 0
+                                          : 0)
                                 ],
                               ),
                               Bubble(
