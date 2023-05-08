@@ -85,10 +85,30 @@ class _ChatState extends State<Chat> {
                                     ? CrossAxisAlignment.end
                                     : CrossAxisAlignment.start,
                             children: [
-                              if (message.senderUsername != widget.username)
-                                Text(message.senderUsername)
-                              else
-                                const Text(''),
+                              Row(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment:
+                                    message.senderUsername == widget.username
+                                        ? CrossAxisAlignment.center
+                                        : CrossAxisAlignment.center,
+                                children: [
+                                  const CircleAvatar(
+                                    radius: 15,
+                                    backgroundImage:
+                                        AssetImage("assets/images/avatar.png"),
+                                  ),
+                                  SizedBox(
+                                      width: message.senderUsername ==
+                                              widget.username
+                                          ? 0
+                                          : 10),
+                                  if (message.senderUsername != widget.username)
+                                    Text(
+                                      message.senderUsername,
+                                      style: const TextStyle(fontSize: 13),
+                                    ),
+                                ],
+                              ),
                               Bubble(
                                 margin: const BubbleEdges.only(top: 10),
                                 radius: const Radius.circular(20.0),
