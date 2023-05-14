@@ -12,42 +12,36 @@ class _UsersState extends State<Users> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Mis contactos'),
+          title: const Text('Conversando con: '),
         ),
         body: ListView(
           children: const <Widget>[
             Card(
               child: ListTile(
-                leading: FlutterLogo(size: 56.0),
-                title: Text('Usuario 1'),
-                subtitle: Text('Último mensaje'),
-                trailing: CircleAvatar(
-                  radius: 15,
-                  backgroundImage: AssetImage("assets/images/avatar.png"),
-                ),
-              ),
+                  leading: CircleAvatar(
+                    radius: 15,
+                    backgroundImage: AssetImage("assets/images/avatar.png"),
+                  ),
+                  title: Text('Usuario 1'),
+                  subtitle: Text('Último mensaje')),
             ),
             Card(
               child: ListTile(
-                leading: FlutterLogo(size: 56.0),
-                title: Text('Usuario 2'),
-                subtitle: Text('Último mensaje'),
-                trailing: CircleAvatar(
-                  radius: 15,
-                  backgroundImage: AssetImage("assets/images/avatar.png"),
-                ),
-              ),
+                  leading: CircleAvatar(
+                    radius: 15,
+                    backgroundImage: AssetImage("assets/images/avatar.png"),
+                  ),
+                  title: Text('Usuario 2'),
+                  subtitle: Text('Último mensaje')),
             ),
             Card(
               child: ListTile(
-                leading: FlutterLogo(size: 56.0),
-                title: Text('Usuario 3'),
-                subtitle: Text('Último mensaje'),
-                trailing: CircleAvatar(
-                  radius: 15,
-                  backgroundImage: AssetImage("assets/images/avatar.png"),
-                ),
-              ),
+                  leading: CircleAvatar(
+                    radius: 15,
+                    backgroundImage: AssetImage("assets/images/avatar.png"),
+                  ),
+                  title: Text('Usuario 3'),
+                  subtitle: Text('Último mensaje')),
             ),
           ],
         ));

@@ -67,11 +67,11 @@ class _PrincipalState extends State<Principal> {
           NavigationDestination(
               icon: Icon(Icons.chat_outlined, color: Color(0xffFF70B4)),
               selectedIcon: Icon(Icons.chat, color: Color(0xffFF70B4)),
-              label: 'Chat'),
+              label: 'Grupo'),
           NavigationDestination(
               icon: Icon(Icons.workspaces_outlined, color: Color(0xff85CEFF)),
               selectedIcon: Icon(Icons.workspaces, color: Color(0xff85CEFF)),
-              label: 'Usuarios'),
+              label: 'Conversaciones'),
         ],
         selectedIndex: selectedIndex,
         onDestinationSelected: onItemTapped,
