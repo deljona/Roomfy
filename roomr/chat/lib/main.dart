@@ -31,7 +31,7 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     //Para dev: "http://10.0.2.2:5000"
     // Para deploy: "http://13.37.121.111:5000"
-    socket = io.io("http://10.0.2.2:5000",
+    socket = io.io("http://13.37.121.111:5000",
         io.OptionBuilder().setTransports(['websocket']).build());
     _connectSocket();
   }
